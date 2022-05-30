@@ -2,6 +2,7 @@ import requests
 from requests.structures import CaseInsensitiveDict
 import sqlite3
 import time
+import os
 
 # global 
 base = "https://www."
@@ -72,9 +73,9 @@ def getAccountId(host, session):
 
 # create a sqlite database accounts.db if it doesn't exist
 def database():
-    conn = sqlite3.connect("accounts.db")
+    conn = sqlite3.connect(os.path.dirname(os.path.abspath(__file__)) + "/accounts.db")
     c = conn.cursor()
-    c.execute("CREATE TABLE IF NOT EXISTS accounts (id INTEGER PRIMARY KEY, username TEXT, password TEXT)")
+    c.execute("CREATE TABLE IF NOT EXISTS accounts (id INTEGER PRIMARY KEY, username TEXT, password TEXT, accountId TEXT, host TEXT)")
     conn.commit()
     # if created, print message and return connection
     print("[+] Starting Up")
@@ -310,3 +311,4 @@ def main():
 
 # start point
 main()
+
