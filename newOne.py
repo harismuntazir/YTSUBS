@@ -277,6 +277,23 @@ def manualActivation(conn, startFrom, endAt) :
     # print status
     print("[+] Promotion For Video " + videoId + " Started")
 
+# create a sign in link and open it in browser
+def signInBrowser(conn):
+    tail = "/signinclick.html"
+
+    # enter account number to sign in
+    accNo = int(input("[+] Enter Account Number: "))
+    # get account from database
+    accounts = getAccounts(conn)
+    account = accounts[accNo - 1]
+    # make url
+    data = "?email=" + account[1] + "&idchannel=" + account[2] + "&isSignIn=true&name="
+    signInUrl = base + account[4] + tail + data
+
+    print (signInUrl)
+    # open sign in link in browser
+    #os.system("start " + signInUrl)
+    
 # menu
 def main():
     # create database connection
@@ -288,6 +305,7 @@ def main():
     print("[+] 2. Promote Video")
     print("[+] 3. Add Reward Points")
     print("[+] 4. Manually Activate Plan")
+    print("[+] 5. Sign In in Browser")
     option =  input("[+] Enter Option: ")
     if (option == "1"):
         addAccountMenu(conn)
@@ -303,6 +321,8 @@ def main():
         startFrom = int(input("[+] Accounts From: "))
         endAt = int(input("[+] Accounts To: "))
         manualActivation(conn, startFrom, endAt)
+    elif (option == "5"):
+        signInBrowser(conn)
     else:
         print("[-] Invalid Option")
     # close database connection
