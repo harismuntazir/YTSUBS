@@ -2,6 +2,7 @@ import server
 import dbconnect as db
 import promote
 import time
+import videos
 
 # add account menu handler
 def addAccountMenu(conn):
@@ -34,10 +35,7 @@ def addAccountMenu(conn):
 def promoteMenu(conn, startFrom, endAt):
     # video id 
     videoUrl = input("[+] Enter Video Link: ")
-    try:
-        videoId = videoUrl.split("=")[1]
-    except:
-        videoId = videoUrl.split("shorts/")[1]
+    videoId = videos.videoId(videoUrl)
     # get user credentials from db
     accounts = db.getAccounts(conn)
     # counter
@@ -103,10 +101,7 @@ def rewardPointsMenu(conn, startFrom, endAt):
 def manualActivationMenu(conn, startFrom, endAt) :
     # video id 
     videoUrl = input("[+] Enter Video Link: ")
-    try:
-        videoId = videoUrl.split("=")[1]
-    except:
-        videoId = videoUrl.split("shorts/")[1]
+    videoId = videos.videoId(videoUrl)
     # get user credentials from db
     accounts = db.getAccounts(conn)
     # counter
@@ -140,6 +135,17 @@ def manualActivationMenu(conn, startFrom, endAt) :
     # print status
     print("[+] Promotion For Video " + videoId + " Started")
 
+# add videos menu handler
+def addVideosMenu(conn):
+    num = 0
+    while num != -9:
+        videoUrl = input("[+] Enter Video Link: ")
+        videoId = videos.videoId(videoUrl)
+        # save the video id to the database
+        videos.addVideoId(conn, videoId)
+        
+        num = int(input("[+] Enter -9 to exit: "))
+
 # menu handler
 def main():
     # create database connection
@@ -149,7 +155,7 @@ def main():
     # menu for adding accounts and promoting videos
     print("[+] 1. Add Account")
     print("[+] 2. Promote Video")
-    print("[+] 3. Add Reward Points")
+    print("[+] 3. Add Video Id")
     print("[+] 4. Manually Activate Plan (Basic)")
     print("[+] 5. Sign In in Browser")
     option =  input("[+] Enter Option: ")
@@ -160,9 +166,7 @@ def main():
         endAt = int(input("[+] Accounts To: "))
         promoteMenu(conn, startFrom, endAt)
     elif (option == "3"):
-        startFrom = int(input("[+] Accounts From: "))
-        endAt = int(input("[+] Accounts To: "))
-        rewardPointsMenu(conn, startFrom, endAt)
+        addVideosMenu(conn)
     elif (option == "4"):
         startFrom = int(input("[+] Accounts From: "))
         endAt = int(input("[+] Accounts To: "))
