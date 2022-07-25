@@ -37,14 +37,3 @@ def getAccounts(conn):
 # number of accounts in the database
 def numAccounts(conn):
     return (len(getAccounts(conn)))
-
-# get all videos from the database 
-def getVideos(conn):
-    c = conn.cursor()
-    c.execute("SELECT * FROM videos")
-    videos = c.fetchall()
-    return videos
-
-# get number of videos in the database
-def numVideos(conn):
-    return (len(getVideos(conn)))

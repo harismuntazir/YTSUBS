@@ -21,3 +21,14 @@ def addVideoId(conn, videoId):
     print("[+] Video Saved")
     print("[+] Total Videos Saved " + str(db.numVideos(conn)))
 
+# get all video ids from videos table
+def getVideoIds(conn):
+    c = conn.cursor()
+    c.execute("SELECT * FROM videos")
+    videoIds = c.fetchall()
+    return videoIds
+
+# get number of videos in the database
+def numVideos(conn):
+    return (len(getVideoIds(conn)))
+
