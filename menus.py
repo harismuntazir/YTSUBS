@@ -166,7 +166,7 @@ def promoteOneByOneMenu(conn, startFrom, endAt):
             # account id 
             accountId = str(account[3])
             # subscription shifter
-            promote.shifter(host, session, videoIds[i][1], accountId)
+            promote.shifter(host, session, videoIds[i-1][1], accountId)
             # activate plan
             promote.activatePlan(host, session, accountId)
             # logout 
@@ -179,4 +179,4 @@ def promoteOneByOneMenu(conn, startFrom, endAt):
         i += 1
     
     # print status
-    print("[+] Promotion For Video " + videoIds[0] + " Started")
+    print("[+] Promotion For Multiple Videos Started")
