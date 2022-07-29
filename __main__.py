@@ -12,7 +12,7 @@ def main():
     print("[+] 1. Add Account")
     print("[+] 2. Promote Video")
     print("[+] 3. Add Video Id")
-    print("[+] 4. Manually Activate Plan (Basic)")
+    print("[+] 4. Fetch Accounts")
     print("[+] 5. Promote One By One")
     print("[+] 6. Sign In in Browser")
     option =  input("[+] Enter Option: ")
@@ -25,9 +25,7 @@ def main():
     elif (option == "3"):
         menus.addVideosMenu(conn)
     elif (option == "4"):
-        startFrom = int(input("[+] Accounts From: "))
-        endAt = int(input("[+] Accounts To: "))
-        menus.manualActivationMenu(conn, startFrom, endAt)
+        menus.fetchAccountsMenu(conn)
     elif (option == "5"):
         print("Total Videos = " + str(videos.numVideos(conn)))
         startFrom = int(input("[+] Accounts From: "))

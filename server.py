@@ -60,4 +60,15 @@ def signInBrowser(conn):
     # open sign in link in browser
     #os.system("start " + signInUrl)
 
+# request user info 
+def getUserInfo(session, host, accoundId):
+    tail = "/updateuser.html"
+    data = "?id=" + str(accoundId) + "&self=false"
+    url = base + host + tail + data
+    resp = requests.get(url, headers=getHeaders(session))
+    return resp.text
+         
+    
+
+
 

