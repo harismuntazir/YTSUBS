@@ -16,6 +16,11 @@ def saveAccount(conn, username, password, accountId, host):
     conn.commit()
     print("[+] Account Saved: " + accountId)
 
+# get all accounts
+def getAccounts(conn):
+    c = conn.cursor()
+    c.execute("SELECT * FROM allAccounts")
+    return c.fetchall()
 
 # get the last parsed account id where host = host
 def getLastParsedAccount(conn, host):

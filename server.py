@@ -22,9 +22,10 @@ def login(host, username, password):
         print("[+] Logged In")
     else:
         print("[-] Login Failed")
+        
     # return the JSESSIONID cookie
     #print(resp.headers["Set-Cookie"].split("JSESSIONID=")[1].split(";")[0])
-    return resp.headers["Set-Cookie"].split("JSESSIONID=")[1].split(";")[0]
+    return [loggedIn, resp.headers["Set-Cookie"].split("JSESSIONID=")[1].split(";")[0]]
 
 # logout 
 def logout(host, session):

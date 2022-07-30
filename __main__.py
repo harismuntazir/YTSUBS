@@ -14,7 +14,7 @@ def main():
     print("[+] 3. Add Video Id")
     print("[+] 4. Fetch Accounts")
     print("[+] 5. Promote One By One")
-    print("[+] 6. Sign In in Browser")
+    print("[+] 6. Add Reward Points to All Accounts")
     option =  input("[+] Enter Option: ")
     if (option == "1"):
         menus.addAccountMenu(conn)
@@ -32,7 +32,9 @@ def main():
         endAt = int(input("[+] Accounts To: "))
         menus.promoteOneByOneMenu(conn, startFrom, endAt)
     elif (option == "6"):
-        menus.server.signInBrowser(conn)
+        startFrom = int(input("[+] Accounts From: "))
+        endAt = int(input("[+] Accounts To: "))
+        menus.addRewardPointsOnlyMenu(conn, startFrom, endAt)
     else:
         print("[-] Invalid Option")
     # close database connection

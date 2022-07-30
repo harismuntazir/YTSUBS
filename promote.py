@@ -34,7 +34,7 @@ def activatePlan(host, session, accountId):
 
 # add reward points 
 def addRewardPoints(host, session, accountId):
-    url = base + host + "/account.html?accountId=" + accountId + "&plan=4&day=-200"
+    url = base + host + "/account.html?accountId=" + accountId + "&plan=4&day=-100"
     resp = requests.get(url, headers=server.getHeaders(session))
     split = resp.text.split('finished":')[1].split(",")[0]
     if (split == "false"):

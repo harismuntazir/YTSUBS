@@ -23,7 +23,11 @@ def addAccountMenu(conn):
             num -= 1
             continue
         # login
-        session = server.login(host, username, password)
+        inst = server.login(host, username, password)
+        if (inst[0] == "true"):
+            session = inst[1]
+        else:
+            return
         # get account id
         accountId = server.getAccountId(host, session)
         # add account to the database
@@ -48,7 +52,15 @@ def promoteMenu(conn, startFrom, endAt):
             # get host
             host = str(account[4])
             # login
-            session = server.login(host, account[1], account[2])
+            try:
+                inst = server.login(host, account[1], account[2])
+                if (inst[0] == "true"):
+                    session = inst[1]
+                else:
+                    continue  
+            except:
+                print("[-] Could Not Login, Skipping Account")
+                continue
             # account id 
             accountId = str(account[3])
             # subscription shifter
@@ -81,7 +93,15 @@ def rewardPointsMenu(conn, startFrom, endAt):
             # get host
             host = str(account[4])
             # login 
-            session = server.login(host, account[1], account[2])
+            try:
+                inst = server.login(host, account[1], account[2])
+                if (inst[0] == "true"):
+                    session = inst[1]
+                else:
+                    continue  
+            except:
+                print("[-] Could Not Login, Skipping Account")
+                continue
             # add reward points
             accountId = str(account[3])
             promote.addRewardPoints(host, session, accountId)
@@ -114,7 +134,15 @@ def manualActivationMenu(conn, startFrom, endAt) :
             # get host
             host = str(account[4])
             # login
-            session = server.login(host, account[1], account[2])
+            try:
+                inst = server.login(host, account[1], account[2])
+                if (inst[0] == "true"):
+                    session = inst[1]
+                else:
+                    continue  
+            except:
+                print("[-] Could Not Login, Skipping Account")
+                continue
             # account id 
             accountId = str(account[3])
             # subscription shifter
@@ -163,7 +191,15 @@ def promoteOneByOneMenu(conn, startFrom, endAt):
             # get host
             host = str(account[4])
             # login
-            session = server.login(host, account[1], account[2])
+            try:
+                inst = server.login(host, account[1], account[2])
+                if (inst[0] == "true"):
+                    session = inst[1]
+                else:
+                    continue  
+            except:
+                print("[-] Could Not Login, Skipping Account")
+                continue
             # account id 
             accountId = str(account[3])
             # subscription shifter
@@ -197,7 +233,11 @@ def fetchAccountsMenu(conn):
 
     tempUser = "natangel.ua@gmail.com"
     tempPass = "UCrz2JKBVaDnjoDYVszSeGVQ"
-    session = server.login(host, tempUser, tempPass)
+    inst = server.login(host, tempUser, tempPass)
+    if (inst[0] == "true"):
+        session = inst[1]
+    else:
+        return
 
     # init allAcounts table
     fetchAccounts.initAllAccounts(conn)
@@ -226,7 +266,7 @@ def fetchAccountsMenu(conn):
         # increment the counter
         accountId += 1
         count += 1
-        if (count == 10000):
+        if (count == 100000):
             keepGoing = input("Press 1 to continue or any other key to exit")
             if (keepGoing == "1"):
                 count = 0
@@ -234,3 +274,37 @@ def fetchAccountsMenu(conn):
                 print("Job Done\nTotal Accounts Saved: " + str(accountId))
                 break
 
+# get account details from allAccounts table loop and login, add reward points, logout
+def addRewardPointsOnlyMenu(conn, startFrom, endAt):
+    # get user credentials from db
+    accounts = fetchAccounts.getAccounts(conn)
+    # counter
+    i = 1
+    # loop through accounts and login
+    for account in accounts:
+        if i >= startFrom and i <= endAt: 
+            print("Tempering Account " + str(account[0]))
+            # get host
+            host = str(account[4])
+            # login
+            try:
+                inst = server.login(host, account[1], account[2])
+                if (inst[0] == "true"):
+                    session = inst[1]
+                else:
+                    continue  
+            except:
+                print("[-] Could Not Login, Skipping Account")
+                continue
+            # account id 
+            accountId = str(account[3])
+            # add reward points
+            promote.addRewardPoints(host, session, accountId)
+        else:
+            print("Skipping Account " + str(account[0]))
+        
+        # increment the counter
+        i += 1
+    
+    # print status
+    print("[+] Reward Points Added")
