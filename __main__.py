@@ -1,6 +1,7 @@
 import dbconnect as db
 import menus
 import videos
+import server
 
 # menu handler
 def main():
