@@ -13,19 +13,28 @@ def getHeaders(session):
 
 # login into the application
 def login(host, username, password):
-    tail = "/signinclick.html"
-    data = "?email=" + username + "&idchannel=" + password + "&isSignIn=true&name="
-    url = base + host + tail + data
-    resp = requests.get(url)
-    loggedIn = resp.text.split('ok":')[1].split(",")[0]
-    if (loggedIn == "true"):
-        print("[+] Logged In")
-    else:
-        print("[-] Login Failed")
-        
-    # return the JSESSIONID cookie
-    #print(resp.headers["Set-Cookie"].split("JSESSIONID=")[1].split(";")[0])
-    return [loggedIn, resp.headers["Set-Cookie"].split("JSESSIONID=")[1].split(";")[0]]
+    isDone = False
+    while not isDone:
+        try:
+            tail = "/signinclick.html"
+            data = "?email=" + username + "&idchannel=" + password + "&isSignIn=true&name="
+            url = base + host + tail + data
+            resp = requests.get(url)
+            loggedIn = resp.text.split('ok":')[1].split(",")[0]
+            if (loggedIn == "true"):
+                print("[+] Logged In")
+                return [loggedIn, resp.headers["Set-Cookie"].split("JSESSIONID=")[1].split(";")[0]]
+            else:
+                print("[-] Login Failed")
+                return [loggedIn, ""]
+
+            isDone = True
+        except:
+            isDone = False
+            print("[-] Retrying To Login")
+            continue
+
+    
 
 # logout 
 def logout(host, session):
