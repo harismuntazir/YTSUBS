@@ -29,15 +29,7 @@ def addAccountMenu(conn):
         else:
             return
         # get account id
-        done = False
-        while not done:
-            try:
-                accountId = server.getAccountId(host, session)
-                done = True
-            except:
-                print("[-] Could Not Get Account ID, Retrying...")
-                done = False
-                continue
+        accountId = server.getAccountId(host, session)
         # add account to the database
         db.addAccount(conn, username, password, accountId, host)
         num = int(input("[+] Enter -9 to exit: "))
@@ -60,49 +52,24 @@ def promoteMenu(conn, startFrom, endAt):
             # get host
             host = str(account[4])
             # login
-            done = False
-            while not done:
-                try:
-                    inst = server.login(host, account[1], account[2])
-                    if (inst[0] == "true"):
-                        session = inst[1]
-                        done = True
-                    else:
-                        continue  
-                except:
-                    print("[-] Could Not Login, Retrying...")
-                    done = True
-                    continue
+            try:
+                inst = server.login(host, account[1], account[2])
+                if (inst[0] == "true"):
+                    session = inst[1]
+                else:
+                    continue  
+            except:
+                print("[-] Could Not Login, Skipping Account")
+                continue
             # account id 
             accountId = str(account[3])
             # subscription shifter
-            done = False
-            while not done:
-                try:
-                    promote.shifter(host, session, videoId, accountId)
-                    done = True
-                except:
-                    print("[-] Could Not Shifter, Retrying...")
-                    done = False
-                    continue
+            promote.shifter(host, session, videoId, accountId)
             # activate plan
-            done = False
-            while not done:
-                try:
-                    promote.activatePlan(host, session, accountId)
-                    done = True
-                except:
-                    print("[-] Could Not Choose Plan, Retrying...")
-                    done = False
-                    continue
+            promote.activatePlan(host, session, accountId)
             # logout 
-            try:
-                server.logout(host, session)
-            except:
-                print("[-] Could Not Logout")
+            server.logout(host, session)
             time.sleep(2)
-        else:
-            print("Skipping Account " + str(account[0]))
         
         # increment the counter
         i += 1
@@ -139,8 +106,6 @@ def rewardPointsMenu(conn, startFrom, endAt):
             # logout 
             server.logout(host, session)
             time.sleep(5)
-        else:
-            print("Skipping Account " + str(account[0]))
         
         # increment the counter
         i += 1
@@ -186,8 +151,6 @@ def manualActivationMenu(conn, startFrom, endAt) :
             # logout 
             server.logout(host, session)
             time.sleep(2)
-        else:
-            print("Skipping Account " + str(account[0]))
         
         # increment the counter
         i += 1
@@ -240,8 +203,6 @@ def promoteOneByOneMenu(conn, startFrom, endAt):
             # logout 
             server.logout(host, session)
             time.sleep(2)
-        else:
-            print("Skipping Account " + str(account[0]))
         
         # increment the counter
         i += 1
@@ -318,32 +279,19 @@ def addRewardPointsOnlyMenu(conn, startFrom, endAt):
             # get host
             host = str(account[4])
             # login
-            done = False
-            while (done == False):
-                try:
-                    inst = server.login(host, account[1], account[2])
-                    if (inst[0] == "true"):
-                        session = inst[1]
-                        done = True
-                    else:
-                        print("[-] Login Failed, Trying Again")
-                        continue  
-                except:
-                    print("[-] Could Not Login, Skipping Account")
-                    done = True
+            try:
+                inst = server.login(host, account[1], account[2])
+                if (inst[0] == "true"):
+                    session = inst[1]
+                else:
+                    continue  
+            except:
+                print("[-] Could Not Login, Skipping Account")
+                continue
             # account id 
             accountId = str(account[3])
             # add reward points
-            done = False
-            while (done == False):
-                try:
-                    server.addRewardPoints(session, host, accountId)
-                    done = True
-                except:
-                    print("[-] Could Not Add Reward Points, Trying Again")
-                    done = False
-        else:
-            print("Skipping Account " + str(account[0]))
+            promote.addRewardPoints(host, session, accountId)
         
         # increment the counter
         i += 1
