@@ -84,11 +84,10 @@ def promoteMenu(conn, startFrom, endAt):
                 server.logout(host, session)
             except:
                 print("[-] Could Not Logout")
-            server.logout(host, session)
 
             # how wait for 30 minutes
-            wait = 30 * 60
-            time.sleep(wait)
+            # wait = 30 * 60
+            # time.sleep(wait)
         
         # increment the counter
         i += 1
@@ -122,9 +121,7 @@ def rewardPointsMenu(conn, startFrom, endAt):
             # add reward points
             accountId = str(account[3])
             promote.addRewardPoints(host, session, accountId)
-            # logout 
-            server.logout(host, session)
-            time.sleep(5)
+            #time.sleep(5)
         
         # increment the counter
         i += 1
@@ -167,9 +164,9 @@ def manualActivationMenu(conn, startFrom, endAt) :
             promote.choosePlan(host, session, "6")
             # verify
             promote.verify(host, session)
-            # logout 
-            server.logout(host, session)
-            time.sleep(2)
+            # # logout 
+            # server.logout(host, session)
+            # time.sleep(2)
         
         # increment the counter
         i += 1
@@ -219,9 +216,9 @@ def promoteOneByOneMenu(conn, startFrom, endAt):
             promote.shifter(host, session, videoIds[i-1][1], accountId)
             # activate plan
             promote.activatePlan(host, session, accountId)
-            # logout 
-            server.logout(host, session)
-            time.sleep(2)
+            # # logout 
+            # server.logout(host, session)
+            # time.sleep(2)
         
         # increment the counter
         i += 1
