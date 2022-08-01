@@ -85,6 +85,10 @@ def promoteMenu(conn, startFrom, endAt):
             except:
                 print("[-] Could Not Logout")
             server.logout(host, session)
+
+            # how wait for 30 minutes
+            wait = 30 * 60
+            time.sleep(wait)
         
         # increment the counter
         i += 1
