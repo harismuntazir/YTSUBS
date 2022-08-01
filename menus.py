@@ -86,8 +86,8 @@ def promoteMenu(conn, startFrom, endAt):
                 print("[-] Could Not Logout")
 
             # how wait for 30 minutes
-            # wait = 30 * 60
-            # time.sleep(wait)
+            wait = 30 * 60
+            time.sleep(wait)
         
         # increment the counter
         i += 1
