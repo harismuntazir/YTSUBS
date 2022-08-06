@@ -19,6 +19,7 @@ def main():
     print("[+] 7. Browser Sign In")
     print("[+] 8. Manual Activation")
     print("[+] 9. Only Shifter")
+    print("[+] 10. Find Channel")
     option =  input("[+] Enter Option: ")
     startFrom = int(input("[+] Accounts From: "))
     endAt = int(input("[+] Accounts To: "))
@@ -42,6 +43,8 @@ def main():
         menus.manualActivationMenu(conn, startFrom, endAt)
     elif (option == "9"):
         menus.shiftVideosMenu(conn, startFrom, endAt)
+    elif (option == "10"):
+        menus.findChannelMenu(conn)
     else:
         print("[-] Invalid Option")
     # close database connection

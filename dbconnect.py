@@ -37,3 +37,11 @@ def getAccounts(conn):
 # number of accounts in the database
 def numAccounts(conn):
     return (len(getAccounts(conn)))
+
+# get account where password = password
+def findChannel(conn, channelId):
+    c = conn.cursor()
+    c.execute("SELECT * FROM accounts WHERE password = ?", (channelId,))
+    account = c.fetchone()
+    return account
+

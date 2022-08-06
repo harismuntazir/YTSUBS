@@ -351,3 +351,15 @@ def addRewardPointsOnlyMenu(conn, startFrom, endAt):
     
     # print status
     print("[+] Reward Points Added")
+
+# find channel id
+def findChannelMenu(conn):
+    channelId = input("[+] Channel Id: ")
+    acc = db.findChannel(conn, channelId)
+    if (acc == None):
+        print("[-] Channel Not Found")
+    else:
+        print("[+] Channel Found")
+        print("[+] Username: " + acc[1])
+        print("[+] Password: " + acc[2])
+        print("[+] Host: " + acc[4])
