@@ -141,7 +141,7 @@ def manualActivationMenu(conn, startFrom, endAt) :
     i = 1
     # loop through accounts and login
     for account in accounts:
-        if i > startFrom and i <= endAt: 
+        if i >= startFrom and i <= endAt: 
             print("Tempering Account " + str(account[0]))
             # get host
             host = str(account[4])
