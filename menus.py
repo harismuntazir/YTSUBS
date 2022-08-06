@@ -95,7 +95,41 @@ def promoteMenu(conn, startFrom, endAt):
     # print status
     print("[+] Promotion For Video " + videoId + " Started")
 
-    
+# only shift videos menu handler
+def shiftVideosMenu(conn, startFrom, endAt):
+    # video id 
+    videoUrl = input("[+] Enter Video Link: ")
+    videoId = videos.videoId(videoUrl)
+    # get user credentials from db
+    accounts = db.getAccounts(conn)
+    # counter
+    i = 1
+    # loop through accounts and login
+    for account in accounts:
+        if i >= startFrom and i <= endAt: 
+            print("Tempering Account " + str(account[0]))
+            # get host
+            host = str(account[4])
+            # login
+            inst = server.login(host, account[1], account[2])
+            if (inst[0] == "true"):
+                session = inst[1]
+            else:
+                continue  
+            # account id 
+            accountId = str(account[3])
+            # subscription shifter
+            isDone = False
+            while not isDone:
+                try:
+                    promote.shifter(host, session, videoId, accountId)
+                    isDone = True
+                except:
+                    print("[-] URL Shifting Failed, Retrying")
+                    isDone = False
+                    continue
+    print("[+] URL Shifting Started")
+
 # reward points menu handler 
 def rewardPointsMenu(conn, startFrom, endAt):
     # get user credentials from db
