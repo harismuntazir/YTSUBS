@@ -30,7 +30,7 @@ def addAccount(conn, username, password, accoundId, host):
 # get all accounts from the database
 def getAccounts(conn):
     c = conn.cursor()
-    c.execute("SELECT * FROM allAccounts")
+    c.execute("SELECT * FROM accounts WHERE host = 'submenow.com'")
     accounts = c.fetchall()
     return accounts
 

