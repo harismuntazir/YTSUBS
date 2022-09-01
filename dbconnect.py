@@ -16,11 +16,6 @@ def closeDB(conn):
 # add account to the database
 def addAccount(conn, username, password, accoundId, host):
     c = conn.cursor()
-    
-    # if accounts table does not exist create it
-    c.execute("CREATE TABLE IF NOT EXISTS accounts (id INTEGER PRIMARY KEY, username TEXT, password TEXT, accountId TEXT, host TEXT)")
-    conn.commit()
-
     # now insert the account and save it
     c.execute("INSERT INTO accounts VALUES (NULL, ?, ?, ?, ?)", (username, password, accoundId, host))
     conn.commit()

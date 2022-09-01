@@ -69,16 +69,16 @@ def promoteMenu(conn, startFrom, endAt):
                     print("[-] URL Shifting Failed, Retrying")
                     isDone = False
                     continue
-            # activate plan
-            isDone = False
-            while not isDone:
-                try:
-                    promote.activatePlan(host, session, accountId)
-                    isDone = True
-                except:
-                    print("[-] Plan Activation Failed, Retrying")
-                    isDone = False
-                    continue
+            # # activate plan
+            # isDone = False
+            # while not isDone:
+            #     try:
+            #         promote.activatePlan(host, session, accountId)
+            #         isDone = True
+            #     except:
+            #         print("[-] Plan Activation Failed, Retrying")
+            #         isDone = False
+            #         continue
             # logout 
             try:
                 server.logout(host, session)
@@ -282,13 +282,14 @@ def fetchAccountsMenu(conn):
         return
 
     # init allAcounts table
-    fetchAccounts.initAllAccounts(conn)
+    #fetchAccounts.initAllAccounts(conn)
     # get last parsed account id
-    accountId = int(fetchAccounts.getLastParsedAccount(conn, host)) + 1
+    #accountId = int(fetchAccounts.getLastParsedAccount(conn, host)) + 1
     
     count = 0
     keepGoing = "1"
     while (keepGoing == "1"):
+        accountId = input("[+] Enter Account ID: ")
         resp = server.getUserInfo(session, host, accountId)
         # spliting 
         try:
@@ -311,7 +312,7 @@ def fetchAccountsMenu(conn):
         fetchAccounts.updateLastParsedAccount(conn, str(accountId), host)
 
         # increment the counter
-        accountId += 1
+        #accountId += 1
         count += 1
         if (count == 1000000):
             keepGoing = input("Press 1 to continue or any other key to exit")
